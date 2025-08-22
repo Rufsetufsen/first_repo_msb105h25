@@ -45,5 +45,75 @@ mtcars <-mtcars[, -1]
 #| paged.print: false
 mtcars[mtcars$Model %in% c("Merc 280", "Ferrari Dino", "Merc 450SLC"), names(mtcars) %in% c("Model", "mpg", "cyl", "wt")]
 ```
+
+```{r}
+#Runs regression analysis where we check if brake length is dependent on speed from dataset "cars".
+lm1<- lm(formula = dist ~ speed, data = cars)
 ```
+
+```{r}
+#Shows summary of previous regression object.
+summary(lm1)
+```
+
+```{r}
+#Plotting cars dataset into a scatterplot. 
+plot(cars)
+#Defining lm1 and adding it as a straight line into plot.
+lm1 <- lm(formula = dist~speed, data = cars)
+abline(lm1)
+```
+
+```{r}
+add_numbers <- function(x=0, y=0){
+  x + y
+}
+```
+
+```{r}
+add_numbers(5, 2000)
+```
+
+```{r}
+# Copied from course page.
+stupid_fun <- function(
+    x1 = 0, 
+    n = 10, 
+    d = 1, # how much to increase number
+    w = 80, # text width in chacters
+    width_fraction = 1, # how wide should the output be
+    print_to_console = TRUE # where to send the output
+    ) {
+  # we stop if we are to produce zero numbers
+  # stopifnot(n > 0) an alternative but throws an error
+  # and stop compilation of the document/presentation
+  if(!n > 0) return("n needs to be positive.")
+  # max number of digits in numbers
+  dig =  nchar(n*d)
+  # width in number of charcter for output
+  w_out = w * width_fraction
+  # allocate a numeric vector with room for n numbers
+  x = vector(mode = "numeric", length = n)
+  # First number in output vector is x1
+  x[1] = x1
+  # we loop through x vector but drop first element
+  for (i in seq_along(x[-1])) {
+    # i starts at 1, so first is x1 + d
+    x[i + 1] = x[i] + d
+    }
+
+# nice trick to control print to console
+if (print_to_console) {
+print(stringr::str_pad(x, width = dig, side = "left", pad = " "),
+      width = w_out)
+  } else {
+    tibble(x)
+  }
+}
+```
+
+```{r}
+stupid_fun(d=3, x1=1)
+```
+
 
