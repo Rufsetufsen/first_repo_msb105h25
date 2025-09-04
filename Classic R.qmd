@@ -31,7 +31,6 @@ mtcars <- as_tibble(mtcars, rownames = "Model")
 mtcars[mtcars$mpg < 20, c(1:3, 7)]
 ```
 
-
 ```{r}
 mtcars <-mtcars[, -1]
 ```
@@ -109,5 +108,7 @@ stupid_fun(d=3, x1=1)
 ## Test Zotero
 
 De siger i herredet at Jeppe drikker, men ingen siger hvorfor Jeppe drikker.[@corsiniFrugalInnovationCrisis2021]
+
+Hallob[@ajith2019]
 
 ## Referanser

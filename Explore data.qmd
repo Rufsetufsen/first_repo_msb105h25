@@ -1,0 +1,24 @@
+---
+title: "Explore_data"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+library(readxl)
+library(tidyverse)
+library(PxWebApiData)
+```
+
+## Leser inn SSB Data
+
+```{r}
+X10540_20250904_151207 <- read_excel("C:/Users/krist/Downloads/10540_20250904-151207.xlsx")
+View(X10540_20250904_151207)
+```
+
+```{r}
+#| eval:false
+  View(10540_20250904-151207.xlsx)
+```
