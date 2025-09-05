@@ -4,21 +4,59 @@ format: html
 editor: visual
 ---
 
-```{r}
+```{r Library}
 #| label: setup
 library(readxl)
 library(tidyverse)
 library(PxWebApiData)
+library(writexl)
 ```
 
 ## Leser inn SSB Data
 
-```{r}
-X10540_20250904_151207 <- read_excel("C:/Users/krist/Downloads/10540_20250904-151207.xlsx")
-View(X10540_20250904_151207)
+```{r Excel reader}
+ssb10540 <- read_excel("./ssb10540.xlsx")
+View(ssb10540)
+View(ssb10540)
 ```
 
 ```{r}
-#| eval:false
-  View(10540_20250904-151207.xlsx)
+#| eval: false
+  View(ssb10540)
+```
+
+```{r Header replacer}
+names(ssb10540) <- c("knr", "alder", "mnd", "arbl")
+```
+
+```{r Filling empty cells}
+ssb10540 <- fill(ssb10540, knr, alder, .direction = "down")
+```
+
+## Lagre data
+
+```{r RData saver}
+save(ssb10540,
+     file = "My-first-regional-unemployment-table.RData")
+rm(ssb10540)
+```
+
+```{r}
+load(file = "My-first-regional-unemployment-table.RData")
+```
+
+```{r Writing to excel}
+write_xlsx(
+  x = ssb10540,
+  path = "Prepared10540.xlsx",
+  format_headers = TRUE,
+  use_zip64 = FALSE
+)
+```
+
+```{r Writing to csv}
+write_csv(
+  ssb10540,
+  file = "ssb10540.csv"
+)
 ```
