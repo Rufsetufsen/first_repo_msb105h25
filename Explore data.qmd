@@ -14,9 +14,16 @@ library(writexl)
 
 ## Leser inn SSB Data
 
+Data henta frå https://www.ssb.no/statbank/table/10540/ 04.05.2025
+
+### Parameter:
+
+-   Måned: 2014M01-2014M12
+-   Region: Alle kommuner - Sandnes (-2019), Stavanger, Eigersund, Haugesund.
+-   Alder: 15-29, 30-74
+
 ```{r Excel reader}
 ssb10540 <- read_excel("./ssb10540.xlsx")
-View(ssb10540)
 View(ssb10540)
 ```
 
@@ -60,3 +67,58 @@ write_csv(
   file = "ssb10540.csv"
 )
 ```
+
+## SSB API
+```{r}
+#| paged.print: false
+ApiData(
+  "https://data.ssb.no/api/v0/en/table/10540/",
+  returnMetaFrames = TRUE
+)
+```
+```{r}
+#| paged.print: false
+ApiData(
+  "https://data.ssb.no/api/v0/en/table/10540/",
+  returnApiQuery = TRUE
+)
+```
+
+```{r}
+unemp99to02 <- ApiData12(
+  urlToData = "https://data.ssb.no/api/v0/en/table/10540/",
+  # or
+  # urlToData = "10540"
+  # Select all municipalities in Vest-Agder and Rogaland
+  Region = list(c("10*","11*")),
+  # Select two age groups
+  Alder = c("15-74", "15-29"),
+  # select 1999M01:2002M12
+  Tid = c(paste(
+    rep(1999:2002, each = 12), 
+    "M",
+    sprintf("%02d", 1:12), 
+    sep = "")
+    )
+  ) |> 
+  # convert from dataframe to tibble
+  as_tibble()
+```
+
+```{r}
+# pick and order variables. 
+unemp99to02 <- unemp99to02 |> 
+  select(
+    knr = Region, 
+    kname = region,  
+    month, 
+    age, 
+    unemp = value
+    )
+```
+
+```{r}
+# Check that it looks OK
+head(unemp99to02, n = 5)
+```
+
