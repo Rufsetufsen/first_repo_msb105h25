@@ -10,6 +10,9 @@ library(readxl)
 library(tidyverse)
 library(PxWebApiData)
 library(writexl)
+library(ggplot2)
+library(tinytex)
+library(ggpubr)
 ```
 
 ## Leser inn SSB Data
@@ -69,6 +72,7 @@ write_csv(
 ```
 
 ## SSB API
+
 ```{r}
 #| paged.print: false
 ApiData(
@@ -76,6 +80,7 @@ ApiData(
   returnMetaFrames = TRUE
 )
 ```
+
 ```{r}
 #| paged.print: false
 ApiData(
@@ -122,3 +127,47 @@ unemp99to02 <- unemp99to02 |>
 head(unemp99to02, n = 5)
 ```
 
+## GGplot
+
+```{r}
+
+```
+
+```{r}
+ggplot() +
+  geom_point(data = mtcars,
+             mapping = aes(x = disp, y = mpg, colour = factor(cyl), size = 3.6*(0.25*1609.347)/qsec,
+                           shape = factor(ifelse(am, "Man", "Aut")))) +
+  labs(colour = "cyl", size = "speed\n(km/h)", shape = "trans-\nmission")
+```
+
+```{r}
+ggplot() +
+  geom_point(
+    data = mtcars,
+    mapping = aes(
+      x = disp,
+      y = mpg, 
+      colour = factor(cyl), 
+      size = 3.6*(0.25*1609.347)/qsec, 
+      shape = factor(
+        # Note codeing am
+        # 0 automatic, 1 manual
+        ifelse(
+          am, 
+          "Aut", 
+          "Man"
+          )
+        )
+      )
+    ) +
+  labs(
+    colour = "cyl", 
+    size = "speed\n(km/h)", 
+    shape = "trans-\nmission"
+    ) +
+  geom_smooth(
+    data = mtcars, 
+    mapping = aes(x = disp, y = mpg)
+    )
+```
