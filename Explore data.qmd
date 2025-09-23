@@ -171,3 +171,67 @@ ggplot() +
     mapping = aes(x = disp, y = mpg)
     )
 ```
+
+## Transform data
+
+```{r}
+library(nycflights13)
+flights |>
+  filter(month %in% c(4:9)) %>% 
+group_by(month) |>
+  summarise(antall = n())
+  
+
+```
+```{r}
+library(nycflights13)
+flights |>
+  filter(day %in% c(1)) %>% 
+group_by(origin, month) |>
+  summarise(antall = n())
+  
+
+```
+
+```{r}
+library(nycflights13)
+flights |>
+group_by(origin, month) |>  
+  filter(day == max(day)) %>% 
+
+    summarise(antall = n())
+```
+
+```{r}
+#Finding flights delayed more than 15,but less than 30 mins.
+library(nycflights13)
+flights |>
+  filter(arr_delay >= 15 & arr_delay <30) %>% 
+group_by(origin, month) |>
+  summarise(antall = n())
+  
+
+```
+```{r}
+#Finding proportion of flights delayed more than 15,but less than 30 mins.
+library(nycflights13)
+delays <- flights |>
+
+  filter(arr_delay >= 15 & arr_delay <30) %>%
+  group_by(origin) |>
+count() |>
+pull()
+
+flights_orig <- flights |>
+  group_by(origin) |>
+summarise(antall = n()) |>
+pull()
+
+round(100 * delays/flights_orig, 2)  
+
+```
+
+```{r}
+view(flights)
+```
+
